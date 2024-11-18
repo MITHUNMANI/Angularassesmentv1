@@ -1,0 +1,24 @@
+<form (ngSubmit)="handleSubmit()">
+    <div *ngFor="let field of formFields">
+      <div *ngIf="shouldRenderField(field)">
+        <label>
+          {{ field.name }}
+          <span *ngIf="field.validator?.includes('required')" style="color: red;">*</span>
+        </label>
+          <input 
+          *ngIf="!field.selectList" 
+          [type]="getInputType(field.fieldtype)" 
+          [name]="field.name" 
+          (input)="handleChange($event, field.name)" 
+          [required]="field.validator?.includes('required')"
+        />
+          <div *ngIf="field.selectList">
+          <select [name]="field.name" (change)="handleChange($event, field.name)">
+            <option *ngFor="let option of field.selectList" [value]="option">{{ option }}</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <button type="submit">Submit</button>
+  </form>
+  
